@@ -1,0 +1,37 @@
+@font-face {
+  font-family: "Grandstander";
+  src: url(/public/assets/fonts/Grandstander-Regular.ttf);
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: "Grandstander";
+  src: url(/public/assets/fonts/Grandstander-Bold.ttf);
+  font-weight: 600;
+}
+
+body {
+  font-family: "Grandstander";
+  background-image: url(/public/assets/img/bg-image.jpg);
+}
+
+h1 {
+  color: #132f63;
+}
+
+.btn-menu {
+  border: 1.5px solid #132f63;
+  background-color: #ebeaea;
+}
+
+.btn-theme {
+  border: 1.5px solid #132f63;
+  background-color: #ebeaea;
+  width: 25%;
+}
+
+@media (max-width: 820px) {
+  .btn-theme {
+    width: 50%;
+  }
+}
