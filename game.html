@@ -27,6 +27,12 @@
           class="text-black text-decoration-none d-block d-lg-none"
           ><img src="/public/assets/img/list.svg" alt="menu" class="menu"
         /></a>
+        <div class="winMessage text-center text-success fs-5 d-none">
+          Félicitations, vous avez gagné!
+        </div>
+        <div class="loseMessage text-center text-danger fs-5 d-none">
+          Oops, vous avez perdu :/
+        </div>
       </div>
     </header>
     <main>
@@ -42,152 +48,15 @@
               class="gallows-image"
             />
           </div>
-          <div class="d-flex justify-content-center gap-3 my-3" id="word">
-            <!-- Будет меняться в зависимости от букв в слове -->
-            <div class="cell text-center">P</div>
-            <div class="cell text-center">A</div>
-            <div class="cell text-center">R</div>
-            <div class="cell text-center">I</div>
-            <div class="cell text-center">S</div>
-          </div>
+          <div class="d-flex justify-content-center gap-3 my-3" id="word"></div>
           <!-- lettres -->
           <div
             class="letters d-flex justify-content-center flex-wrap column-gap-4 mt-4"
-          >
-            <div class="letter">
-              A
-              <div class="yesLetter d-none"></div>
-              <div class="notLetter d-none"></div>
-            </div>
-            <div class="letter">
-              B
-              <div class="yesLetter d-none"></div>
-              <div class="notLetter d-none"></div>
-            </div>
-            <div class="letter">
-              C
-              <div class="yesLetter d-none"></div>
-              <div class="notLetter d-none"></div>
-            </div>
-            <div class="letter">
-              D
-              <div class="yesLetter d-none"></div>
-              <div class="notLetter d-none"></div>
-            </div>
-            <div class="letter">
-              E
-              <div class="yesLetter d-none"></div>
-              <div class="notLetter d-none"></div>
-            </div>
-            <div class="letter">
-              F
-              <div class="yesLetter d-none"></div>
-              <div class="notLetter d-none"></div>
-            </div>
-            <div class="letter">
-              G
-              <div class="yesLetter d-none"></div>
-              <div class="notLetter d-none"></div>
-            </div>
-            <div class="letter">
-              H
-              <div class="yesLetter d-none"></div>
-              <div class="notLetter d-none"></div>
-            </div>
-            <div class="letter">
-              I
-              <div class="yesLetter d-none"></div>
-              <div class="notLetter d-none"></div>
-            </div>
-            <div class="letter">
-              J
-              <div class="yesLetter d-none"></div>
-              <div class="notLetter d-none"></div>
-            </div>
-            <div class="letter">
-              K
-              <div class="yesLetter d-none"></div>
-              <div class="notLetter d-none"></div>
-            </div>
-            <div class="letter">
-              L
-              <div class="yesLetter d-none"></div>
-              <div class="notLetter d-none"></div>
-            </div>
-            <div class="letter">
-              M
-              <div class="yesLetter d-none"></div>
-              <div class="notLetter d-none"></div>
-            </div>
-            <div class="letter">
-              N
-              <div class="yesLetter d-none"></div>
-              <div class="notLetter d-none"></div>
-            </div>
-            <div class="letter">
-              O
-              <div class="yesLetter d-none"></div>
-              <div class="notLetter d-none"></div>
-            </div>
-            <div class="letter">
-              P
-              <div class="yesLetter d-none"></div>
-              <div class="notLetter d-none"></div>
-            </div>
-            <div class="letter">
-              Q
-              <div class="yesLetter d-none"></div>
-              <div class="notLetter d-none"></div>
-            </div>
-            <div class="letter">
-              R
-              <div class="yesLetter d-none"></div>
-              <div class="notLetter d-none"></div>
-            </div>
-            <div class="letter">
-              S
-              <div class="yesLetter d-none"></div>
-              <div class="notLetter d-none"></div>
-            </div>
-            <div class="letter">
-              T
-              <div class="yesLetter d-none"></div>
-              <div class="notLetter d-none"></div>
-            </div>
-            <div class="letter">
-              U
-              <div class="yesLetter d-none"></div>
-              <div class="notLetter d-none"></div>
-            </div>
-            <div class="letter">
-              V
-              <div class="yesLetter d-none"></div>
-              <div class="notLetter d-none"></div>
-            </div>
-            <div class="letter">
-              W
-              <div class="yesLetter d-none"></div>
-              <div class="notLetter d-none"></div>
-            </div>
-            <div class="letter">
-              X
-              <div class="yesLetter d-none"></div>
-              <div class="notLetter d-none"></div>
-            </div>
-            <div class="letter">
-              Y
-              <div class="yesLetter d-none"></div>
-              <div class="notLetter d-none"></div>
-            </div>
-            <div class="letter">
-              Z
-              <div class="yesLetter d-none"></div>
-              <div class="notLetter d-none"></div>
-            </div>
-          </div>
+          ></div>
         </div>
       </div>
     </main>
-    <script src="./public/assets/js/script.js"></script>
+    <script src="./public/assets/js/fonctions.js"></script>
+    <script src="./public/assets/js/game.js"></script>
   </body>
 </html>
