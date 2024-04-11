@@ -13,7 +13,8 @@ let collectionOfThisCategory = localStorage.getItem("collection");
 collectionOfThisCategory = JSON.parse(collectionOfThisCategory);
 let newCollection = collectionOfThisCategory;
 const categoryName = localStorage.getItem("categoryName");
-let hiddenWord = Array(word.length).fill("_");
+let hiddenWord = Array(chosenWord.length).fill("_");
+let isGuessed = false;
 
 game();
 

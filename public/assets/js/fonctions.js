@@ -82,7 +82,7 @@ const createLetterBouttons = () => {
     const notDiv = document.createElement("div");
     notDiv.classList.add("notLetter", "d-none");
     letterDiv.textContent = letter.toUpperCase();
-    letterDiv.classList.add("letter");
+    letterDiv.classList.add("letter", "text-center");
     letterDiv.appendChild(yesDiv);
     letterDiv.appendChild(notDiv);
     letterDiv.addEventListener("click", getInformationAboutLetter);
@@ -98,19 +98,21 @@ const getInformationAboutLetter = (e) => {
   checkLetter(letter, yesMark, notMark);
 };
 
+// Vérifier si la lettre sélectionnée est dans un mot (la fonction principale du jeu)
 const checkLetter = (letter, yesMark, notMark) => {
   if (remainingAttempts > 0 && hiddenWord.includes("_")) {
-    if (removeAccent(word).includes(letter)) {
-      for (let index = 0; index < word.length; index++) {
-        if (removeAccent(word[index]) === letter) {
+    if (removeAccent(chosenWord).includes(letter)) {
+      for (let index = 0; index < chosenWord.length; index++) {
+        if (removeAccent(chosenWord[index]) === letter) {
           hiddenWord[index] = letter;
           yesMark.classList.remove("d-none");
           yesMark.classList.add("d-block");
-          allCells[index].textContent = word[index].toUpperCase();
+          allCells[index].textContent = chosenWord[index].toUpperCase();
         }
       }
       if (!hiddenWord.includes("_")) {
         imageReinitialisation("win");
+        isGuessed = true;
         return;
       }
     } else {
@@ -126,40 +128,52 @@ const checkLetter = (letter, yesMark, notMark) => {
       remainingAttempts--;
       notMark.classList.remove("d-none");
       notMark.classList.add("d-block");
-      console.log(remainingAttempts);
       if (remainingAttempts == 0) {
         imageReinitialisation("lose");
+        wordContainer.previousElementSibling.textContent = `Le mot caché était: ${chosenWord}`;
       }
     }
   } else {
+    wordContainer.previousElementSibling.textContent = `Le mot caché était: ${chosenWord}`;
     if (remainingAttempts == 0) {
       imageReinitialisation("lose");
     }
   }
 };
 
+// Supprimer les accents d'un mot ou d'une lettre
 const removeAccent = (str) => {
   const normalizedStr = str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
   return normalizedStr;
 };
 
+// Démarrage du jeu après avoir chargé la page
 const game = () => {
   setupAnswerArray(chosenWord);
   createLetterBouttons();
   categoryNameHeading.textContent = `Catégorie: ${categoryName}`;
 };
 
+// Obtenir un nouveau mot après avoir appuyé sur un bouton "Rejouer"
 const getNewWord = () => {
-  let filteredCollection = newCollection.filter((word) => word !== chosenWord);
-  console.log(filteredCollection);
+  if (isGuessed) {
+    newCollection = newCollection.filter((word) => word !== chosenWord);
+    isGuessed = false;
+  } else {
+    newCollection = newCollection;
+  }
+  console.log(newCollection);
   let newRandomWord =
-    filteredCollection[Math.floor(Math.random() * filteredCollection.length)];
+    newCollection[Math.floor(Math.random() * newCollection.length)];
   chosenWord = newRandomWord;
+  console.log(chosenWord);
   gameReinitialisation(chosenWord);
 };
 
+// Réinitialisation des données du jeu précédent
 const gameReinitialisation = (newWord) => {
   hiddenWord = Array(newWord.length).fill("_");
+  wordContainer.previousElementSibling.textContent = "";
   lettersContaner.innerHTML = "";
   wordContainer.innerHTML = "";
   gallowsContainer.innerHTML = "";
@@ -170,6 +184,7 @@ const gameReinitialisation = (newWord) => {
   createLetterBouttons();
 };
 
+// Réinitialisation de l'image
 const imageReinitialisation = (image) => {
   gallowsContainer.innerHTML = "";
   const imgGallows = document.createElement("img");
