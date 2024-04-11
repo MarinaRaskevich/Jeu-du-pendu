@@ -31,7 +31,9 @@ const addInCollection = (data) => {
 // Obtenir l'ID de catégorie à partir d'un bouton cliqué
 const getId = (event) => {
   event.preventDefault();
-  id = event.target.dataset.id;
+  const id = event.target.dataset.id;
+  const categoryName = event.target.innerText;
+  localStorage.setItem("categoryName", categoryName);
   getWordsOfThisCategory(id);
 };
 
@@ -88,6 +90,7 @@ const createLetterBouttons = () => {
   });
 };
 
+// Obtenir des informations sur la lettre sur laquelle l'utilisateur a cliqué
 const getInformationAboutLetter = (e) => {
   const letter = e.target.innerText.toLowerCase();
   const yesMark = e.srcElement.children[0];
@@ -95,10 +98,7 @@ const getInformationAboutLetter = (e) => {
   checkLetter(letter, yesMark, notMark);
 };
 
-const guessLetter = (e) => {
-  const letter = e.target.innerText.toLowerCase();
-  const yes = e.srcElement.children[0];
-  const not = e.srcElement.children[1];
+const checkLetter = (letter, yesMark, notMark) => {
   if (remainingAttempts > 0 && hiddenWord.includes("_")) {
     if (removeAccent(word).includes(letter)) {
       for (let index = 0; index < word.length; index++) {
@@ -110,8 +110,7 @@ const guessLetter = (e) => {
         }
       }
       if (!hiddenWord.includes("_")) {
-        winMessage.classList.remove("d-none");
-        winMessage.classList.add("d-block");
+        imageReinitialisation("win");
         return;
       }
     } else {
@@ -129,48 +128,53 @@ const guessLetter = (e) => {
       notMark.classList.add("d-block");
       console.log(remainingAttempts);
       if (remainingAttempts == 0) {
-        loseMessage.classList.remove("d-none");
-        loseMessage.classList.add("d-block");
+        imageReinitialisation("lose");
       }
     }
   } else {
     if (remainingAttempts == 0) {
-      loseMessage.classList.remove("d-none");
-      loseMessage.classList.add("d-block");
+      imageReinitialisation("lose");
     }
   }
 };
 
-const game = () => {
-  setupAnswerArray(word);
-  createLetterBouttons();
+const removeAccent = (str) => {
+  const normalizedStr = str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+  return normalizedStr;
 };
 
-const removeAccent = (letter) => {
-  const normalizedLetter = letter
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "");
-  return normalizedLetter;
+const game = () => {
+  setupAnswerArray(chosenWord);
+  createLetterBouttons();
+  categoryNameHeading.textContent = `Catégorie: ${categoryName}`;
 };
 
 const getNewWord = () => {
-  let collectionOfThisCategory = localStorage.getItem("collection");
-  collectionOfThisCategory = JSON.parse(collectionOfThisCategory);
-  let randomWord =
-    collectionOfThisCategory[
-      Math.floor(Math.random() * collectionOfThisCategory.length)
-    ];
-  console.log(randomWord);
+  let filteredCollection = newCollection.filter((word) => word !== chosenWord);
+  console.log(filteredCollection);
+  let newRandomWord =
+    filteredCollection[Math.floor(Math.random() * filteredCollection.length)];
+  chosenWord = newRandomWord;
+  gameReinitialisation(chosenWord);
+};
+
+const gameReinitialisation = (newWord) => {
+  hiddenWord = Array(newWord.length).fill("_");
   lettersContaner.innerHTML = "";
   wordContainer.innerHTML = "";
   gallowsContainer.innerHTML = "";
   remainingAttempts = 10;
+  imageReinitialisation("gallows-start");
+
+  setupAnswerArray(newWord);
+  createLetterBouttons();
+};
+
+const imageReinitialisation = (image) => {
+  gallowsContainer.innerHTML = "";
   const imgGallows = document.createElement("img");
-  imgGallows.setAttribute("src", `./public/assets/img/gallows-start.svg`);
-  imgGallows.setAttribute("alt", "pendu");
+  imgGallows.setAttribute("src", `./public/assets/img/${image}.svg`);
+  imgGallows.setAttribute("alt", `${image}`);
   imgGallows.classList.add("gallows-image", "w-100");
   gallowsContainer.appendChild(imgGallows);
-
-  setupAnswerArray(randomWord);
-  createLetterBouttons();
 };
