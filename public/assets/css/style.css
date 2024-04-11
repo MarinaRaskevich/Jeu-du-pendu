@@ -13,14 +13,19 @@
 body {
   font-family: "Grandstander";
   background-image: url(/public/assets/img/bg-image.jpg);
+  height: 100vh;
 }
 
 header {
-  height: 15vh;
+  height: 12%;
 }
 
 main {
-  height: 80vh;
+  height: 88%;
+}
+
+#game {
+  height: 100%;
 }
 
 h1 {
@@ -37,18 +42,27 @@ h1 {
   width: 25%;
 }
 
-.game-container {
-  width: 45vw;
+.btn-newWord {
+  border: 1.5px solid #000000;
+  background-color: #132f63;
+  color: #ebeaea;
+  cursor: pointer;
 }
 
-.gallows-image {
-  width: 40%;
+.game-container {
+  width: 48vw;
+  height: 95%;
+}
+
+#gallows {
+  width: 35%;
+  height: 42%;
 }
 
 .cell {
   border-bottom: 2px solid #132f63;
   color: #132f63;
-  font-size: 3rem;
+  font-size: 2.6rem;
   width: 6%;
 }
 
@@ -57,7 +71,8 @@ h1 {
   justify-content: center;
   position: relative;
   color: #132f63;
-  font-size: 2.8rem;
+  font-size: 2.6rem;
+  cursor: pointer;
 }
 
 .yesLetter {
@@ -79,17 +94,13 @@ h1 {
   height: 100%;
 }
 
-@media (max-width: 820px) {
-  header {
-    height: 10vh;
-  }
-
+@media (max-width: 767px) {
   .game-container {
     width: 90vw;
   }
 
-  .gallows-image {
-    width: 65%;
+  #gallows {
+    width: 57%;
   }
 
   .btn-theme {
@@ -99,5 +110,42 @@ h1 {
   .cell {
     width: 7%;
     font-size: 2.5rem;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 819px) {
+  .game-container {
+    width: 80vw;
+  }
+
+  #gallows {
+    width: 50%;
+  }
+
+  .letter {
+    font-size: 3rem;
+  }
+
+  .btn-theme {
+    width: 50%;
+  }
+}
+
+@media (min-width: 820px) and (max-width: 1024px) {
+  .game-container {
+    width: 80vw;
+  }
+
+  #gallows {
+    width: 50%;
+  }
+
+  .letter,
+  .cell {
+    font-size: 3.7rem;
+  }
+
+  .btn-theme {
+    width: 50%;
   }
 }

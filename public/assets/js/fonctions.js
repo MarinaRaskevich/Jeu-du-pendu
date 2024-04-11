@@ -50,18 +50,20 @@ const getWordsOfThisCategory = (id) => {
 // Obtenir un mot aléatoire à partir d'une table de mots
 const pickRandomWord = (collection) => {
   let randomWord = collection[Math.floor(Math.random() * collection.length)];
+  const wordsCollection = JSON.stringify(collection);
+  localStorage.setItem("collection", wordsCollection);
   localStorage.setItem("randomWord", randomWord);
   document.location.href = "./game.html";
 };
 
 //////////// Fonctions pour GAME.HTML ////////////
 // Création d'un nombre précis de divs égal au nombre de lettres du mot sélectionné
-const setupAnswerArray = () => {
-  let word = localStorage.getItem("randomWord");
+const setupAnswerArray = (word) => {
   let answerArray = [];
   for (let index = 0; index < word.length; index++) {
     let cell = document.createElement("div");
     cell.classList.add("cell");
+    cell.textContent = "*";
     cell.setAttribute("data-id", index);
     wordContainer.appendChild(cell);
     answerArray[index] = "_";
@@ -81,43 +83,94 @@ const createLetterBouttons = () => {
     letterDiv.classList.add("letter");
     letterDiv.appendChild(yesDiv);
     letterDiv.appendChild(notDiv);
-    letterDiv.addEventListener("click", guessLetter);
+    letterDiv.addEventListener("click", getInformationAboutLetter);
     lettersContaner.appendChild(letterDiv);
   });
+};
+
+const getInformationAboutLetter = (e) => {
+  const letter = e.target.innerText.toLowerCase();
+  const yesMark = e.srcElement.children[0];
+  const notMark = e.srcElement.children[1];
+  checkLetter(letter, yesMark, notMark);
 };
 
 const guessLetter = (e) => {
   const letter = e.target.innerText.toLowerCase();
   const yes = e.srcElement.children[0];
   const not = e.srcElement.children[1];
-  const word = localStorage.getItem("randomWord");
-  let hiddenWord = Array(word.length).fill("_");
-  if (word.includes(letter)) {
-    for (let index = 0; index < word.length; index++) {
-      if (word[index] === letter) {
-        hiddenWord[index] = letter;
-        yes.classList.remove("d-none");
-        yes.classList.add("d-block");
-        allCells[index].textContent = letter.toUpperCase();
+  if (remainingAttempts > 0 && hiddenWord.includes("_")) {
+    if (removeAccent(word).includes(letter)) {
+      for (let index = 0; index < word.length; index++) {
+        if (removeAccent(word[index]) === letter) {
+          hiddenWord[index] = letter;
+          yesMark.classList.remove("d-none");
+          yesMark.classList.add("d-block");
+          allCells[index].textContent = word[index].toUpperCase();
+        }
+      }
+      if (!hiddenWord.includes("_")) {
+        winMessage.classList.remove("d-none");
+        winMessage.classList.add("d-block");
+        return;
+      }
+    } else {
+      const imgGallows = document.createElement("img");
+      imgGallows.setAttribute(
+        "src",
+        `./public/assets/img/${remainingAttempts}.svg`
+      );
+      imgGallows.setAttribute("alt", "pendu");
+      imgGallows.classList.add("gallows-image", "w-100");
+      gallowsContainer.innerHTML = "";
+      gallowsContainer.appendChild(imgGallows);
+      remainingAttempts--;
+      notMark.classList.remove("d-none");
+      notMark.classList.add("d-block");
+      console.log(remainingAttempts);
+      if (remainingAttempts == 0) {
+        loseMessage.classList.remove("d-none");
+        loseMessage.classList.add("d-block");
       }
     }
-    if (!hiddenWord.includes("_")) {
-      winMessage.classList.remove("d-none");
-      winMessage.classList.add("d-block");
-      return;
-    }
   } else {
-    remainingAttempts--;
-    not.classList.remove("d-none");
-    not.classList.add("d-block");
+    if (remainingAttempts == 0) {
+      loseMessage.classList.remove("d-none");
+      loseMessage.classList.add("d-block");
+    }
   }
 };
 
 const game = () => {
-  setupAnswerArray();
+  setupAnswerArray(word);
   createLetterBouttons();
-  while (remainingAttempts <= 0) {
-    guessLetter();
-    console.log(remainingAttempts);
-  }
+};
+
+const removeAccent = (letter) => {
+  const normalizedLetter = letter
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "");
+  return normalizedLetter;
+};
+
+const getNewWord = () => {
+  let collectionOfThisCategory = localStorage.getItem("collection");
+  collectionOfThisCategory = JSON.parse(collectionOfThisCategory);
+  let randomWord =
+    collectionOfThisCategory[
+      Math.floor(Math.random() * collectionOfThisCategory.length)
+    ];
+  console.log(randomWord);
+  lettersContaner.innerHTML = "";
+  wordContainer.innerHTML = "";
+  gallowsContainer.innerHTML = "";
+  remainingAttempts = 10;
+  const imgGallows = document.createElement("img");
+  imgGallows.setAttribute("src", `./public/assets/img/gallows-start.svg`);
+  imgGallows.setAttribute("alt", "pendu");
+  imgGallows.classList.add("gallows-image", "w-100");
+  gallowsContainer.appendChild(imgGallows);
+
+  setupAnswerArray(randomWord);
+  createLetterBouttons();
 };
