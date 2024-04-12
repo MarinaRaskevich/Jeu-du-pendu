@@ -33,12 +33,11 @@ const getId = (event) => {
   event.preventDefault();
   const id = event.target.dataset.id;
   const categoryName = event.target.innerText;
-  localStorage.setItem("categoryName", categoryName);
-  getWordsOfThisCategory(id);
+  getWordsOfThisCategory(id, categoryName);
 };
 
 // Récupération des mots de la catégorie sélectionnée
-const getWordsOfThisCategory = (id) => {
+const getWordsOfThisCategory = (id, categoryName) => {
   let wordsOfThisCategory = wordsCollection.filter((item) => item.id == id);
   wordsOfThisCategory = wordsOfThisCategory[0].words;
 
@@ -46,14 +45,32 @@ const getWordsOfThisCategory = (id) => {
   wordsOfThisCategory.forEach((element) => {
     arrayForRandomWord.push(element.name);
   });
+  saveInLocalStorage(id, categoryName, arrayForRandomWord);
   pickRandomWord(arrayForRandomWord);
+};
+
+const saveInLocalStorage = (id, categoryName, wordsCollection) => {
+  localStorage.setItem("id", id);
+  let userHistory = {
+    id: id,
+    categoryName: categoryName,
+    wordsCollection: wordsCollection,
+  };
+
+  if (localStorage.getItem("userHistory") !== null) {
+    const userData = JSON.parse(localStorage.getItem("userHistory"));
+    userData.push(userHistory);
+    localStorage.setItem("userHistory", JSON.stringify(userData));
+  } else {
+    const userData = [];
+    userData.push(userHistory);
+    localStorage.setItem("userHistory", JSON.stringify(userData));
+  }
 };
 
 // Obtenir un mot aléatoire à partir d'une table de mots
 const pickRandomWord = (collection) => {
   let randomWord = collection[Math.floor(Math.random() * collection.length)];
-  const wordsCollection = JSON.stringify(collection);
-  localStorage.setItem("collection", wordsCollection);
   localStorage.setItem("randomWord", randomWord);
   document.location.href = "./game.html";
 };
