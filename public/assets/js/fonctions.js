@@ -169,6 +169,7 @@ const game = () => {
   setupAnswerArray(chosenWord);
   createLetterBouttons();
   categoryNameHeading.textContent = `Catégorie: ${categoryName}`;
+  wordCounter.textContent = `Vous avez déviné ${guessedWordsCounter} mot(s) sur 15`;
 };
 
 // Obtenir un nouveau mot après avoir appuyé sur un bouton "Rejouer"
@@ -215,5 +216,8 @@ const removeGuessedWordFromCollection = () => {
   newCollection = newCollection.filter((word) => word !== chosenWord);
   userHistory.find((element) => element.id == chosenCategory).wordsCollection =
     newCollection;
+  wordCounter.textContent = `Vous avez déviné ${
+    15 - newCollection.length
+  } mot(s) sur 15`;
   localStorage.setItem("userHistory", JSON.stringify(userHistory));
 };

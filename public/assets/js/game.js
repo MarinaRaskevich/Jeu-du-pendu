@@ -5,10 +5,10 @@ const allCells = document.querySelector("#word").childNodes;
 const gallowsContainer = document.querySelector("#gallows");
 const buttonsForGetNewWord = document.querySelectorAll(".btn-replay");
 const categoryNameHeading = document.querySelector("#categoryName");
+const wordCounter = document.querySelector("#counter");
 
 // Initialisation des tentatives de jeu
 let remainingAttempts = 10;
-
 // Nouveau mot de la catégorie sélectionnée
 let chosenWord = localStorage.getItem("randomWord");
 const chosenCategory = localStorage.getItem("id");
@@ -21,7 +21,7 @@ const categoryName = userHistory.find(
   (element) => element.id == chosenCategory
 ).categoryName;
 let hiddenWord = Array(chosenWord.length).fill("_");
-let isGuessed = false;
+let guessedWordsCounter = 15 - newCollection.length;
 
 game();
 
