@@ -8,6 +8,8 @@ const categoryNameHeading = document.querySelector("#categoryName");
 
 // Initialisation des tentatives de jeu
 let remainingAttempts = 10;
+
+// Nouveau mot de la catégorie sélectionnée
 let chosenWord = localStorage.getItem("randomWord");
 let collectionOfThisCategory = localStorage.getItem("collection");
 collectionOfThisCategory = JSON.parse(collectionOfThisCategory);

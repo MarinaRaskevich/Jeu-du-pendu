@@ -111,32 +111,27 @@ const checkLetter = (letter, yesMark, notMark) => {
         }
       }
       if (!hiddenWord.includes("_")) {
-        imageReinitialisation("win");
+        imageReinitialisation("win", "Vous avez gagne");
         isGuessed = true;
         return;
       }
     } else {
-      const imgGallows = document.createElement("img");
-      imgGallows.setAttribute(
-        "src",
-        `./public/assets/img/${remainingAttempts}.svg`
+      imageReinitialisation(
+        `${remainingAttempts}`,
+        `Image du pendu: vous avez encore ${remainingAttempts} coup(s)`
       );
-      imgGallows.setAttribute("alt", "pendu");
-      imgGallows.classList.add("gallows-image", "w-100");
-      gallowsContainer.innerHTML = "";
-      gallowsContainer.appendChild(imgGallows);
       remainingAttempts--;
       notMark.classList.remove("d-none");
       notMark.classList.add("d-block");
       if (remainingAttempts == 0) {
-        imageReinitialisation("lose");
+        imageReinitialisation("lose", "Vous avez perdu");
         wordContainer.previousElementSibling.textContent = `Le mot caché était: ${chosenWord}`;
       }
     }
   } else {
     wordContainer.previousElementSibling.textContent = `Le mot caché était: ${chosenWord}`;
     if (remainingAttempts == 0) {
-      imageReinitialisation("lose");
+      imageReinitialisation("lose", "Vous avez perdu");
     }
   }
 };
@@ -159,6 +154,13 @@ const getNewWord = () => {
   if (isGuessed) {
     newCollection = newCollection.filter((word) => word !== chosenWord);
     isGuessed = false;
+    if (newCollection.length == 0) {
+      imageReinitialisation(
+        "empty",
+        "Vous avez déviner tous les mots de cette catégorie"
+      );
+      return;
+    }
   } else {
     newCollection = newCollection;
   }
@@ -185,11 +187,11 @@ const gameReinitialisation = (newWord) => {
 };
 
 // Réinitialisation de l'image
-const imageReinitialisation = (image) => {
+const imageReinitialisation = (image, alt) => {
   gallowsContainer.innerHTML = "";
   const imgGallows = document.createElement("img");
   imgGallows.setAttribute("src", `./public/assets/img/${image}.svg`);
-  imgGallows.setAttribute("alt", `${image}`);
+  imgGallows.setAttribute("alt", `${alt}`);
   imgGallows.classList.add("gallows-image", "w-100");
   gallowsContainer.appendChild(imgGallows);
 };
