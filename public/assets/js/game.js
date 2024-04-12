@@ -11,10 +11,15 @@ let remainingAttempts = 10;
 
 // Nouveau mot de la catégorie sélectionnée
 let chosenWord = localStorage.getItem("randomWord");
-let collectionOfThisCategory = localStorage.getItem("collection");
-collectionOfThisCategory = JSON.parse(collectionOfThisCategory);
+const chosenCategory = localStorage.getItem("id");
+let userHistory = JSON.parse(localStorage.getItem("userHistory"));
+const collectionOfThisCategory = userHistory.find(
+  (element) => element.id == chosenCategory
+).wordsCollection;
 let newCollection = collectionOfThisCategory;
-const categoryName = localStorage.getItem("categoryName");
+const categoryName = userHistory.find(
+  (element) => element.id == chosenCategory
+).categoryName;
 let hiddenWord = Array(chosenWord.length).fill("_");
 let isGuessed = false;
 

@@ -46,9 +46,9 @@ const getWordsOfThisCategory = (id, categoryName) => {
     arrayForRandomWord.push(element.name);
   });
   saveInLocalStorage(id, categoryName, arrayForRandomWord);
-  pickRandomWord(arrayForRandomWord);
 };
 
+//Mettre les données de l'utilisateur dans LocalStorage
 const saveInLocalStorage = (id, categoryName, wordsCollection) => {
   localStorage.setItem("id", id);
   let userHistory = {
@@ -59,8 +59,13 @@ const saveInLocalStorage = (id, categoryName, wordsCollection) => {
 
   if (localStorage.getItem("userHistory") !== null) {
     const userData = JSON.parse(localStorage.getItem("userHistory"));
-    userData.push(userHistory);
-    localStorage.setItem("userHistory", JSON.stringify(userData));
+    if (!userData.find((data) => data.id == id)) {
+      userData.push(userHistory);
+      localStorage.setItem("userHistory", JSON.stringify(userData));
+      pickRandomWord(wordsCollection);
+    } else {
+      pickRandomWord(userData.find((data) => data.id == id).wordsCollection);
+    }
   } else {
     const userData = [];
     userData.push(userHistory);
@@ -129,7 +134,7 @@ const checkLetter = (letter, yesMark, notMark) => {
       }
       if (!hiddenWord.includes("_")) {
         imageReinitialisation("win", "Vous avez gagne");
-        isGuessed = true;
+        removeGuessedWordFromCollection();
         return;
       }
     } else {
@@ -168,24 +173,16 @@ const game = () => {
 
 // Obtenir un nouveau mot après avoir appuyé sur un bouton "Rejouer"
 const getNewWord = () => {
-  if (isGuessed) {
-    newCollection = newCollection.filter((word) => word !== chosenWord);
-    isGuessed = false;
-    if (newCollection.length == 0) {
-      imageReinitialisation(
-        "empty",
-        "Vous avez déviner tous les mots de cette catégorie"
-      );
-      return;
-    }
-  } else {
-    newCollection = newCollection;
+  if (newCollection.length == 0) {
+    imageReinitialisation(
+      "empty",
+      "Vous avez déviner tous les mots de cette catégorie"
+    );
+    return;
   }
-  console.log(newCollection);
   let newRandomWord =
     newCollection[Math.floor(Math.random() * newCollection.length)];
   chosenWord = newRandomWord;
-  console.log(chosenWord);
   gameReinitialisation(chosenWord);
 };
 
@@ -211,4 +208,12 @@ const imageReinitialisation = (image, alt) => {
   imgGallows.setAttribute("alt", `${alt}`);
   imgGallows.classList.add("gallows-image", "w-100");
   gallowsContainer.appendChild(imgGallows);
+};
+
+//Supprimer le mot déviné
+const removeGuessedWordFromCollection = () => {
+  newCollection = newCollection.filter((word) => word !== chosenWord);
+  userHistory.find((element) => element.id == chosenCategory).wordsCollection =
+    newCollection;
+  localStorage.setItem("userHistory", JSON.stringify(userHistory));
 };
