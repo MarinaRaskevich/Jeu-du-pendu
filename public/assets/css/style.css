@@ -1,18 +1,18 @@
 @font-face {
   font-family: "Grandstander";
-  src: url(../assets/fonts/Grandstander-Regular.ttf);
+  src: url(../fonts/Grandstander-Regular.ttf);
   font-weight: 400;
 }
 
 @font-face {
   font-family: "Grandstander";
-  src: url(../assets/fonts/Grandstander-Bold.ttf);
+  src: url(../fonts/Grandstander-Bold.ttf);
   font-weight: 600;
 }
 
 body {
   font-family: "Grandstander";
-  background-image: url(../assets/img/bg-image.jpg);
+  background-image: url(../img/bg-image.jpg);
   height: 100vh;
 }
 
@@ -80,12 +80,12 @@ h1 {
 }
 
 .yesLetter {
-  background: url(../assets/img/yes.svg) center center no-repeat;
+  background: url(../img/yes.svg) center center no-repeat;
   background-size: 100%;
 }
 
 .notLetter {
-  background: url(../assets/img/not.svg) center center no-repeat;
+  background: url(../img/not.svg) center center no-repeat;
   background-size: 100%;
 }
 
